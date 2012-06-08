@@ -26,30 +26,28 @@ int main()
 #if 1
 	string exp;	
 	string::iterator s_it;
-	stack<string> s_stack;
+	stack<char> s_stack;
 	
 	cout << "please input expression..." << endl;
 	cin >> exp;
 	
 	//operation
-	it = exp.begin();
-	while (it != exp.end()) {
-		if (*it != ')')	{
-			s_stack.push(*it);	
+	s_it = exp.begin();
+	while (s_it != exp.end()) {
+		if (*s_it != ')')	{
+			s_stack.push(*s_it);	
 		}
 		else {
-				
-			while (s_stack.top() != '(' && !s_stack.empty())
+			while (!s_stack.empty() && s_stack.top() != '(' )
 				s_stack.pop();
+			
+			if (s_stack.empty())	
+				cout << "not matched..." << endl;
+			else {
+				s_stack.pop();	
+				s_stack.push('@');
+			}
 		}
-	
-		if (s_stack.empty())	
-			cout << "not matched..." << endl;
-		else {
-			s_stack.pop();	
-			s_stack.push('@');
-		}
-
 		++s_it;
 	}
 
