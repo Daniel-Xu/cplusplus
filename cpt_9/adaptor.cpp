@@ -51,6 +51,17 @@ int main()
 		++s_it;
 	}
 
+	stack<char> s_show;
+	while (!s_stack.empty()) {
+		s_show.push(s_stack.top());
+		s_stack.pop();
+	}
+	while (!s_show.empty()) {
+		cout << s_show.top();
+		s_show.pop();
+	}
+	cout << endl;
+
 #endif
 
 	return 0;
