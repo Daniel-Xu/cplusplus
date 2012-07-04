@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -18,30 +20,57 @@ int main()
 	cout << "please input book list you have read" << endl;
 	while (cin >> name)
 		h_read.insert(name);
-	
-	vector<string>::iterator w_it = w_vec.begin();
+
+	//random num seed
+	srand((unsigned int)time(NULL));
+	cin.clear();	
+
 
 	string will;
-	while (w_it != w_vec.end()) {
-		cout << "Do you wanna read this book? yes or no" << endl;
+	string bookname;
+	bool timeover = false;
+	while (!w_vec.empty() && !timeover) {
+		cout << "Do you wanna read a book? yes or no" << endl;
 		cin >> will;	
-		if (!will.compare("yes")) {
-			h_read.insert(*w_it);	
+		if (will[0] == 'y' || will[0] == 'Y') {
+			int i = rand()%w_vec.size();
+			bookname = w_vec[i];
+			h_read.insert(bookname);	
+			w_vec.erase(w_vec.begin()+i);
+			cout << "the bookname is " << bookname << endl;
+
+			cout << "whether you read it or not? yes or no" << endl;
+			cin >> will;
+			if (will[0] == 'n' || will[0] == 'N') {
+				w_vec.push_back(bookname);
+				h_read.erase(bookname);
+			}
 		} 
-		else {
-			h_read.erase(*w_it);	
-			cout << "you never read this book!" << endl;
+
+		cout << "time over? yes or no" << endl;
+		cin >> will;
+		if (will[0] == 'y' || will[0] == 'Y') {
+			timeover = true;
 		}
-		w_it++;
 	}
 
-	//output
-	set<string>::iterator s_it = h_read.begin();
-	while (s_it != h_read.end()) {
-		cout << "the books you have read are:" << endl
-			 << "\t" << *s_it++ << "\t" ;	
+	if (timeover) {
+		//output
+		set<string>::iterator s_it = h_read.begin();
+		cout << "the books you have read are:" << endl;
+		while (s_it != h_read.end()) {
+			cout << "\t" << *s_it++ << endl;	
+		}
+
+		vector<string>::iterator w_it = w_vec.begin();
+		cout << "the books you wanna read but never read are:" << endl;
+		while (w_it != w_vec.end()) {
+			cout << "\t" << *w_it++ << endl;
+		}
 	}
-	cout << endl;
+	else {
+		cout << "you have read all of the books! Congratulations!" << endl;
+	}
 
 	return 0;
 }
